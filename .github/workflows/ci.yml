@@ -72,6 +72,7 @@ jobs:
         php-version:
           - 7.4
   code-quality-frontend:
+    if: ${{ false }
     name: "Code quality frontend checks"
     runs-on: ubuntu-20.04
     strategy:
@@ -96,6 +97,7 @@ jobs:
       - name: "Run the xliff lint"
         uses: TYPO3-Continuous-Integration/TYPO3-CI-Xliff-Lint@v1
   unit-tests:
+    if: ${{ false }
     name: "Unit tests"
     runs-on: ubuntu-20.04
     needs: php-lint
@@ -175,6 +177,7 @@ jobs:
             php-version: 8.1
             composer-dependencies: lowest
   functional-tests:
+    if: ${{ false }
     name: "Functional tests"
     runs-on: ubuntu-18.04
     needs: php-lint

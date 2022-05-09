@@ -12,7 +12,7 @@
 		}
 	],
 	"require": {
-		"php": "^7.4 || ^8",
+		"php": "^7.2 || ^8.0",
 		"typo3\/cms-core": "^9.5 || ^10.4 || ^11.5 || ^12"
 	},
 	"require-dev": {
@@ -48,7 +48,7 @@
 			"ergebnis\/composer-normalize": true,
 			"phpstan\/extension-installer": true
 		},
-		"bin-dir": ".Build\/bin",
+		"bin-dir": ".Build\/vendor\/bin",
 		"sort-packages": true,
 		"vendor-dir": ".Build\/vendor"
 	},
@@ -73,7 +73,7 @@
 		],
 		"ci:coverage:functional": [
 			"@coverage:create-directories",
-			".Build\/bin\/phpunit -c .Build\/vendor\/typo3\/testing-framework\/Resources\/Core\/Build\/FunctionalTests.xml --whitelist Classes --coverage-php=.Build\/coverage\/functional.cov Tests\/Functional"
+			".Build\/vendor\/bin\/phpunit -c .Build\/vendor\/typo3\/testing-framework\/Resources\/Core\/Build\/FunctionalTests.xml --whitelist Classes --coverage-php=.Build\/coverage\/functional.cov Tests\/Functional"
 		],
 		"ci:coverage:merge": [
 			"@coverage:create-directories",
@@ -81,12 +81,12 @@
 		],
 		"ci:coverage:unit": [
 			"@coverage:create-directories",
-			".Build\/bin\/phpunit -c .Build\/vendor\/typo3\/testing-framework\/Resources\/Core\/Build\/UnitTests.xml --whitelist Classes --coverage-php=.Build\/coverage\/unit.cov Tests\/Unit"
+			".Build\/vendor\/bin\/phpunit -c .Build\/vendor\/typo3\/testing-framework\/Resources\/Core\/Build\/UnitTests.xml --whitelist Classes --coverage-php=.Build\/coverage\/unit.cov Tests\/Unit"
 		],
 		"ci:dynamic": [
 			"@ci:tests"
 		],
-		"ci:json:lint": "find . ! -path '*.Build\/*' ! -path '*node_modules\/*' -name '*.json' | xargs -r php .Build\/bin\/jsonlint -q",
+		"ci:json:lint": "find . ! -path '*.Build\/*' ! -path '*node_modules\/*' -name '*.json' | xargs -r php .Build\/vendor\/bin\/jsonlint -q",
 		"ci:php": [
 			"@ci:php:copypaste",
 			"@ci:php:cs-fixer",
@@ -114,10 +114,10 @@
 			"@ci:tests:unit",
 			"@ci:tests:functional"
 		],
-		"ci:tests:functional": "find 'Tests\/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build\/bin\/phpunit -c .Build\/vendor\/typo3\/testing-framework\/Resources\/Core\/Build\/FunctionalTests.xml {}';",
-		"ci:tests:unit": ".Build\/bin\/phpunit -c .Build\/vendor\/typo3\/testing-framework\/Resources\/Core\/Build\/UnitTests.xml Tests\/Unit",
+		"ci:tests:functional": "find 'Tests\/Functional' -wholename '*Test.php' | parallel --gnu 'echo; echo \"Running functional test suite {}\"; .Build\/vendor\/bin\/phpunit -c .Build\/vendor\/typo3\/testing-framework\/Resources\/Core\/Build\/FunctionalTests.xml {}';",
+		"ci:tests:unit": ".Build\/vendor\/bin\/phpunit -c .Build\/vendor\/typo3\/testing-framework\/Resources\/Core\/Build\/UnitTests.xml Tests\/Unit",
 		"ci:ts:lint": "typoscript-lint -c Configuration\/TsLint.yml --ansi -n --fail-on-warnings -vvv Configuration\/TypoScript",
-		"ci:yaml:lint": "find . ! -path '*.Build\/*' ! -path '*node_modules\/*' -name '*.yml' | xargs -r php .\/.Build\/bin\/yaml-lint",
+		"ci:yaml:lint": "find . ! -path '*.Build\/*' ! -path '*node_modules\/*' -name '*.yml' | xargs -r php .\/.Build\/vendor\/bin\/yaml-lint",
 		"coverage:create-directories": "mkdir -p build\/logs .Build\/coverage",
 		"docs:generate": [
 			"docker run --rm t3docs\/render-documentation show-shell-commands > tempfile.sh; echo 'dockrun_t3rd makehtml' >> tempfile.sh; bash tempfile.sh; rm tempfile.sh"
@@ -132,7 +132,7 @@
 			"@php -r 'is_dir($extFolder=__DIR__.\"\/.Build\/public\/typo3conf\/ext\/\") || mkdir($extFolder, 0777, true);'",
 			"@php -r 'file_exists($extFolder=__DIR__.\"\/.Build\/public\/typo3conf\/ext\/showpageeditors\") || symlink(__DIR__,$extFolder);'"
 		],
-		"phpstan:baseline": ".Build\/bin\/phpstan  --generate-baseline=phpstan-baseline.neon",
+		"phpstan:baseline": ".Build\/vendor\/bin\/phpstan  --generate-baseline=phpstan-baseline.neon",
 		"prepare-release": [
 			"rm .gitignore",
 			"rm -rf .Build",
