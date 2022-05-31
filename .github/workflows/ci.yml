@@ -1,7 +1,7 @@
 ---
 # This GitHub Actions workflow uses the same development tools that are also installed locally
 # via Composer or PHIVE and calls them using the Composer scripts.
-name: CI with Composer scripts
+name: CI tests
 on:
   push:
     branches:
