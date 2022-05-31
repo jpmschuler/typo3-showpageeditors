@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  JPMSchuler\ShowPageEditors\:
+    resource: '../Classes/*'
+
+  JPMSchuler\ShowPageEditors\Command\ShowBackendVisibilityOfPage:
+    tags:
+      - name: 'console.command'
+        command: 'Commands.php'
+        schedulable: false
