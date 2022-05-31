@@ -11,17 +11,39 @@ use Symfony\Component\Console\Question\Question;
 
 class ShowBackendVisibilityOfPage extends Command
 {
+    protected const FIRST_WORD_PAD = 12;
+
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      *
      * @return int
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln(PageVisibleHelper::showList($input->getArgument('pid')));
-
+        foreach (PageVisibleHelper::showList($input->getArgument('pid')) as $line) {
+            switch (substr($line, 0, 3)) {
+                case 'PID':
+                    $output->writeln('<info>' . static::padLine($line) . '</info>');
+                    break;
+                case 'GID':
+                    $output->writeln('<comment>' . static::padLine($line, ' ') . '</comment>');
+                    break;
+                case 'UID':
+                    $output->writeln('<comment>' . static::padLine($line, ' \\') . '</comment>');
+                    break;
+                default:
+                    $output->writeln($line);
+            }
+        }
         return 0;
+    }
+
+    protected static function padLine($line, $prefix = ''): string
+    {
+        $firstWord = explode(' ', trim($line))[0];
+        $rest = trim(strstr($line, ' '));
+        return str_pad($prefix . $firstWord, self::FIRST_WORD_PAD, ' ') . $rest;
     }
 
     protected function configure(): void
@@ -47,7 +69,7 @@ class ShowBackendVisibilityOfPage extends Command
     }
 
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
      */
     protected function interact(InputInterface $input, OutputInterface $output): void

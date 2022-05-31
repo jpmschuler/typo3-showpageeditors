@@ -14,15 +14,20 @@ class PageVisibleHelper
         $pages = static::getPageTreeForPid($pageId);
         $output = [];
 
-        $output[] = 'Analysing page ' . $pageId . ':';
+        $output[] = '<success>Showing all pages up to TYPO3 root and all groups and users</success>';
+        $output[] = '<success>which have access on each level (and thus below).</success>';
+        $output[] = '<success>This does not consider page access, but only db mounts.</success>';
+        $output[] = '';
+        $output[] = 'Page visibility for pid ' . $pageId . ':';
+
         foreach ($pages as $item) {
-            $output[] = str_pad($item['uid'], 5, '0', STR_PAD_LEFT) . ' ' . $item['title'];
+            $output[] = 'PID_' . $item['uid'] . ' ' . $item['title'];
             $groupList = static::fetchBeGroupsForDbMountpoint($item['uid']);
             if (count($groupList) > 0) {
                 foreach ($groupList as $group) {
-                    $output[] = ' group-' . $group['uid'] . ' ' . $group['title'];
+                    $output[] = 'GID_' . $group['uid'] . ' ' . $group['title'];
                     foreach (static::fetchBeUsers($group['uid']) as $user) {
-                        $output[] = '  user-' . $user['uid'] . ' ' . $user['username'];
+                        $output[] = 'UID_' . $user['uid'] . ' ' . $user['username'];
                     }
                 }
             }
