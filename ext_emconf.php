@@ -1,7 +1,7 @@
 <?php
 $EM_CONF['showpageeditors'] = [
     'title' => 'ShowPageEditors',
-    'description' => 'Retrieve every editor who can see a given PID in the backend',
+    'description' => 'CLI command to retrieve every editor who can see a given PID in the backend',
     'version' => '1.0.6',
     'category' => 'misc',
     'author' => 'J. Peter M. Schuler',
