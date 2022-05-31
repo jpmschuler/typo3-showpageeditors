@@ -10,5 +10,5 @@ services:
   JPMSchuler\ShowPageEditors\Command\ShowBackendVisibilityOfPage:
     tags:
       - name: 'console.command'
-        command: 'Commands.php'
+        command: 'page:showVisibilityFor'
         schedulable: false
