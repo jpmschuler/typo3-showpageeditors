@@ -14,9 +14,9 @@ class PageVisibleHelper
         $pages = static::getPageTreeForPid($pageId);
         $output = [];
 
-        $output[] = '<success>Showing all pages up to TYPO3 root and all groups and users</success>';
-        $output[] = '<success>which have access on each level (and thus below).</success>';
-        $output[] = '<success>This does not consider page access, but only db mounts.</success>';
+        $output[] = 'Showing all pages up to TYPO3 root and all groups and users';
+        $output[] = 'which have access on each level (and thus below).';
+        $output[] = 'This does not consider page access, but only db mounts.';
         $output[] = '';
         $output[] = 'Page visibility for pid ' . $pageId . ':';
 
