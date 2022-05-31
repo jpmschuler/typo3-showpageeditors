@@ -9,6 +9,7 @@
 /nbproject
 /node_modules/
 /package-lock.json
+/showpageeditors_*.zip
 /var
 /yarn-error.log
 /yarn.lock

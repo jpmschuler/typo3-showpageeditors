@@ -103,6 +103,6 @@
 			"@php -r 'file_exists($extFolder=__DIR__.\"/.Build/public/typo3conf/ext/showpageeditors\") || symlink(__DIR__,$extFolder);'"
 		],
 		"phpstan:baseline": ".Build/vendor/bin/phpstan  --generate-baseline=phpstan-baseline.neon",
-		"release": "git commit -a -m \"[RELEASE] Releasing $1\"; git tag $1  -m \"[RELEASE] Releasing $1\";  git archive -o \"tvplus_contentslide_$(node -pe \"require('./package.json').version\").zip\" v$(node -pe \"require('./package.json').version\"); npm run version:prerelease; git commit -a -m \"[TASK] set version to v$(node -pe \"require('./package.json').version\")\""
+		"release": "./tools/release.sh"
 	}
 }
