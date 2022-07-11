@@ -40,7 +40,7 @@ class PageVisibleHelper
     {
         $queryBuilder = GeneralUtility::makeInstance(ConnectionPool::class)->getQueryBuilderForTable('be_groups');
 
-        if (0 === $groupId) {
+        if ($groupId === 0) {
             /** @var Statement $result */
             $result = $queryBuilder
                 ->select('uid', 'username')
@@ -79,7 +79,7 @@ class PageVisibleHelper
 
     public static function fetchBeGroupsForDbMountpoint($pageId): array
     {
-        if (0 === $pageId) {
+        if ($pageId === 0) {
             return [
                 ['uid' => 0, 'title' => 'Admin-flagged users'],
             ];
