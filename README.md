@@ -36,7 +36,8 @@ PID_4       1.2
  \UID_5     editor12
 ```
 
-|                  | URL                                                     |
-|------------------|---------------------------------------------------------|
-| **Repository:**  | https://github.com/jpmschuler/typo3-showpageeditors     |
-| **TER:**         | https://extensions.typo3.org/extension/showpageeditors  |
+|                 | URL                                                     |
+|-----------------|---------------------------------------------------------|
+| **Repository:** | https://github.com/jpmschuler/typo3-showpageeditors     |
+| **TER:**        | https://extensions.typo3.org/extension/showpageeditors  |
+| **Packagist:**  | https://packagist.org/packages/jpmschuler/showpageeditors |
