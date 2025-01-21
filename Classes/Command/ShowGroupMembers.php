@@ -2,8 +2,8 @@
 
 namespace JPMSchuler\ShowPageEditors\Command;
 
+use JPMSchuler\ShowPageEditors\Utility\GroupMemberHelper;
 use JPMSchuler\ShowPageEditors\Utility\MarkupHelper;
-use JPMSchuler\ShowPageEditors\Utility\PageVisibleHelper;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputArgument;
@@ -11,10 +11,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class ShowBackendVisibilityOfPage extends Command
+class ShowGroupMembers extends Command
 {
-    protected const FIRST_WORD_PAD = 12;
-
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -23,25 +21,20 @@ class ShowBackendVisibilityOfPage extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $data = PageVisibleHelper::showList($input->getArgument('pid'));
-        $output->writeln(MarkupHelper::convertLinesForOutput($data));
-
+        $gids = explode(',', trim((string)$input->getArgument('gid')));
+        foreach ($gids as $gid) {
+            $data = GroupMemberHelper::showList($gid);
+            $output->writeln(MarkupHelper::convertLinesForOutput($data));
+        }
         return 0;
-    }
-
-    protected static function padLine($line, $prefix = ''): string
-    {
-        $firstWord = explode(' ', trim((string)$line))[0];
-        $rest = trim(strstr((string)$line, ' '));
-        return str_pad($prefix . $firstWord, self::FIRST_WORD_PAD, ' ') . $rest;
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Show for which users a page is mounted')
-            ->setHelp('This command retrieves be_groups and be_users which have access to a page')
-            ->addArgument('pid', InputArgument::REQUIRED, 'the table name');
+            ->setDescription('Show which users are part of a group')
+            ->setHelp('This command retrieves be_users which are in a group')
+            ->addArgument('gid', InputArgument::REQUIRED, 'the group uid');
     }
 
     /**
@@ -50,13 +43,13 @@ class ShowBackendVisibilityOfPage extends Command
      */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
-        if (!$input->getArgument('pid')) {
-            $output->writeln('Please provide a pid');
+        if (!$input->getArgument('gid')) {
+            $output->writeln('Please provide a gid');
             /** @var QuestionHelper $helper */
             $helper = $this->getHelper('question');
-            $question = new Question('pid: ');
+            $question = new Question('gid: ');
             $pid = $helper->ask($input, $output, $question);
-            $input->setArgument('pid', $pid);
+            $input->setArgument('gid', $pid);
         }
     }
 }

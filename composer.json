@@ -17,30 +17,26 @@
 		"docs": "https://github.com/jpmschuler/typo3-showpageeditors/blob/main/README.md"
 	},
 	"require": {
-		"php": "^7.2 || ^8.0",
-		"typo3/cms-core": "^9.5 || ^10.4 || ^11.5 || ^12 || *@dev"
+		"php": "^8.1",
+		"typo3/cms-core": "*@dev || ^12.4.25"
 	},
 	"require-dev": {
-		"codeception/codeception": "^4.1.31",
-		"doctrine/dbal": "^2.13.8",
 		"ergebnis/composer-normalize": "^2.28.0",
-		"friendsofphp/php-cs-fixer": "^3.4.0",
-		"helhum/typo3-console": "^5 || ^6 || ^7",
-		"helmich/typo3-typoscript-lint": "^2.5.2",
+		"friendsofphp/php-cs-fixer": "^3.68.1",
+		"helhum/typo3-console": "^8.2.2",
+		"helmich/typo3-typoscript-lint": "^3.2.1",
+		"icanhazstring/composer-unused": "^0.8.11",
 		"jangregor/phpstan-prophecy": "^1.0.0",
 		"php-coveralls/php-coveralls": "^2.5.2",
 		"phpstan/extension-installer": "^1.1.0",
 		"phpstan/phpstan": "^1.6.2",
-		"phpstan/phpstan-phpunit": "^1.1.1",
-		"phpunit/phpunit": "^8.5.26",
 		"roave/security-advisories": "dev-latest",
-		"saschaegerer/phpstan-typo3": "^1.1.2",
+		"saschaegerer/phpstan-typo3": "^1.10.2",
 		"seld/jsonlint": "^1.9.0",
 		"squizlabs/php_codesniffer": "^3.6.2",
-		"symfony/yaml": "^4.4.29 || ^5.3.6 || ^6.0",
-		"typo3/coding-standards": "^0.5.2",
-		"typo3/minimal": "^9 || ^10 || ^11 || ^12",
-		"typo3/testing-framework": "^6.15.3"
+		"ssch/typo3-rector": "2.12.2",
+		"symfony/yaml": "^6.4.13 || ^7.2.0",
+		"typo3/coding-standards": "^0.8.0"
 	},
 	"autoload": {
 		"psr-4": {
@@ -49,10 +45,10 @@
 	},
 	"config": {
 		"allow-plugins": {
-			"typo3/class-alias-loader": true,
-			"typo3/cms-composer-installers": true,
 			"ergebnis/composer-normalize": true,
-			"phpstan/extension-installer": true
+			"phpstan/extension-installer": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
 		},
 		"bin-dir": ".Build/vendor/bin",
 		"sort-packages": true,
@@ -70,8 +66,9 @@
 		"ci": [
 			"@ci:static"
 		],
-		"ci:composer:normalize": "@composer normalize --dry-run",
-		"ci:json:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -name '*.json' | xargs -r php .Build/vendor/bin/jsonlint -q",
+		"ci:composer:normalize": "@composer normalize --no-check-lock --dry-run",
+		"ci:composer:psr-verify": "@composer dumpautoload --optimize --strict-psr --no-plugins",
+		"ci:composer:unused": "composer-unused",
 		"ci:php": [
 			"@ci:php:copypaste",
 			"@ci:php:cs-fixer",
@@ -83,10 +80,10 @@
 		"ci:php:cs-fixer": "php-cs-fixer fix --config .php-cs-fixer.php -v --dry-run --using-cache no --diff",
 		"ci:php:lint": "find *.php Classes Configuration -name '*.php' -print0 | xargs -r -0 -n 1 -P 4 php -l",
 		"ci:php:sniff": "phpcs Classes Configuration",
-		"ci:php:stan": "phpstan --no-progress",
+		"ci:php:stan": "phpstan --no-progress -v",
 		"ci:static": [
 			"@ci:composer:normalize",
-			"@ci:json:lint",
+			"@ci:composer:unused",
 			"@ci:php:copypaste",
 			"@ci:php:cs-fixer",
 			"@ci:php:lint",
@@ -96,16 +93,27 @@
 		],
 		"ci:ts:lint": "echo \"not implemented\"",
 		"ci:yaml:lint": "find . ! -path '*.Build/*' ! -path '*node_modules/*' -name '*.yml' | xargs -r php ./.Build/vendor/bin/yaml-lint",
-		"coverage:create-directories": "mkdir -p build/logs .Build/coverage",
+		"develop": [
+			"Composer\\Config::disableProcessTimeout",
+			"npx onchange -k -v ./** -e '.Build/' -- composer run develop:deploy"
+		],
+		"develop:deploy": "[ -f ./.deploy.sh ] && ./.deploy.sh",
 		"docs:generate": [
 			"docker run --rm t3docs/render-documentation show-shell-commands > tempfile.sh; echo 'dockrun_t3rd makehtml' >> tempfile.sh; bash tempfile.sh; rm tempfile.sh"
 		],
+		"fix": [
+			"@fix:composer:normalize",
+			"@fix:php"
+		],
+		"fix:composer:normalize": "@composer normalize --no-check-lock",
 		"fix:php": [
+			"@fix:php:rector",
 			"@fix:php:cs",
 			"@fix:php:sniff"
 		],
 		"fix:php:cs": "php-cs-fixer fix --config .php-cs-fixer.php",
-		"fix:php:sniff": "phpcbf Classes Configuration",
+		"fix:php:rector": "rector",
+		"fix:php:sniff": "phpcbf --standard=phpcs.xml Classes Configuration",
 		"link-extension": [
 			"@php -r 'is_dir($extFolder=__DIR__.\"/.Build/public/typo3conf/ext/\") || mkdir($extFolder, 0777, true);'",
 			"@php -r 'file_exists($extFolder=__DIR__.\"/.Build/public/typo3conf/ext/showpageeditors\") || symlink(__DIR__,$extFolder);'"

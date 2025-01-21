@@ -12,3 +12,9 @@ services:
       - name: 'console.command'
         command: 'page:showVisibilityFor'
         schedulable: false
+
+  JPMSchuler\ShowPageEditors\Command\ShowGroupMembers:
+    tags:
+      - name: 'console.command'
+        command: 'begroup:showMembers'
+        schedulable: false
