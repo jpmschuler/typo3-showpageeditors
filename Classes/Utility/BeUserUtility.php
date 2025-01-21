@@ -23,7 +23,9 @@ class BeUserUtility
             ->andWhere(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($groupId, Connection::PARAM_INT)),
             )
-            ->executeQuery()->fetchAllAssociative() ?: [['uid' => $groupId, 'title' => $groupId == 0 ? 'Admin users' : 'ERROR: group not found']];
+            ->executeQuery()->fetchAllAssociative() ?: [
+                ['uid' => $groupId, 'title' => $groupId == 0 ? 'Admin users' : 'ERROR: group not found'],
+            ];
     }
 
     public static function fetchBeUsers(int $groupId): array

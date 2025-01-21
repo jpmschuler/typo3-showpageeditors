@@ -21,10 +21,15 @@ class ShowGroupMembers extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $gids = explode(',', trim((string)$input->getArgument('gid')));
-        foreach ($gids as $gid) {
+        $groupIds = explode(',', trim((string)$input->getArgument('gid')));
+        $lineFeed = false;
+        foreach ($groupIds as $gid) {
+            if ($lineFeed) {
+                $output->writeln('');
+            }
             $data = GroupMemberHelper::showList($gid);
             $output->writeln(MarkupHelper::convertLinesForOutput($data));
+            $lineFeed = true;
         }
         return 0;
     }

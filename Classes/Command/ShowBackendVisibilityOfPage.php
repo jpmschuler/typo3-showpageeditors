@@ -13,8 +13,6 @@ use Symfony\Component\Console\Question\Question;
 
 class ShowBackendVisibilityOfPage extends Command
 {
-    protected const FIRST_WORD_PAD = 12;
-
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -27,13 +25,6 @@ class ShowBackendVisibilityOfPage extends Command
         $output->writeln(MarkupHelper::convertLinesForOutput($data));
 
         return 0;
-    }
-
-    protected static function padLine($line, $prefix = ''): string
-    {
-        $firstWord = explode(' ', trim((string)$line))[0];
-        $rest = trim(strstr((string)$line, ' '));
-        return str_pad($prefix . $firstWord, self::FIRST_WORD_PAD, ' ') . $rest;
     }
 
     protected function configure(): void
