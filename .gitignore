@@ -13,4 +13,5 @@
 /var
 /yarn-error.log
 /yarn.lock
+/.deploy.sh
 .DS_Store

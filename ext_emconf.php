@@ -7,13 +7,9 @@ $EM_CONF['showpageeditors'] = [
     'author' => 'J. Peter M. Schuler',
     'author_email' => 'j.peter.m.schuler@uni-due.de',
     'state' => 'stable',
-    'internal' => '',
-    'uploadfolder' => '0',
-    'createDirs' => '',
-    'clearCacheOnLoad' => 0,
     'constraints' => [
         'depends' => [
-            'typo3' => '9.5.0-11.5.99',
+            'typo3' => '12.4.25-12.4.99',
         ],
     ]
 ];
