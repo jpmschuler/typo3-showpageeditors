@@ -40,7 +40,7 @@ PID_4       1.2
 
 ```sh
 # just run the command "begroup:showMembers <gid>", e.g.
-/vendor/bin/typo3 begroup:showMembers 1                                                                        ✔  9948  10:33:55
+/vendor/bin/typo3 begroup:showMembers 1
 Group members of group 1 (myGroup) and other groups inheriting from it:
  GID_1      myGroup
  \UID_3     editor3
@@ -49,8 +49,8 @@ Group members of group 1 (myGroup) and other groups inheriting from it:
  \UID_17    editor17
 ```
 
-|                 | URL                                                     |
-|-----------------|---------------------------------------------------------|
-| **Repository:** | https://github.com/jpmschuler/typo3-showpageeditors     |
-| **TER:**        | https://extensions.typo3.org/extension/showpageeditors  |
+|                 | URL                                                       |
+|-----------------|-----------------------------------------------------------|
+| **Repository:** | https://github.com/jpmschuler/typo3-showpageeditors       |
+| **TER:**        | https://extensions.typo3.org/extension/showpageeditors    |
 | **Packagist:**  | https://packagist.org/packages/jpmschuler/showpageeditors |
