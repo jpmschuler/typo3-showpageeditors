@@ -2,7 +2,7 @@
 $EM_CONF['showpageeditors'] = [
     'title' => 'ShowPageEditors',
     'description' => 'CLI command to retrieve every editor who can see a given PID in the backend',
-    'version' => '2.0.0',
+    'version' => '2.0.1',
     'category' => 'misc',
     'author' => 'J. Peter M. Schuler',
     'author_email' => 'j.peter.m.schuler@uni-due.de',
