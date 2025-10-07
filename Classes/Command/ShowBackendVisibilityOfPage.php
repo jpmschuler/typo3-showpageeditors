@@ -21,10 +21,11 @@ class ShowBackendVisibilityOfPage extends Command
      */
     public function execute(InputInterface $input, OutputInterface $output): int
     {
-        $data = PageVisibleHelper::showList($input->getArgument('pid'));
+        $data = PageVisibleHelper::getList($input->getArgument('pid'), $output->getVerbosity());
         $output->writeln(MarkupHelper::convertLinesForOutput($data));
 
         return 0;
+
     }
 
     protected function configure(): void

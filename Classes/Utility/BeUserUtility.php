@@ -24,8 +24,8 @@ class BeUserUtility
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($groupId, Connection::PARAM_INT)),
             )
             ->executeQuery()->fetchAllAssociative() ?: [
-                ['uid' => $groupId, 'title' => $groupId == 0 ? 'Admin users' : 'ERROR: group not found'],
-            ];
+            ['uid' => $groupId, 'title' => $groupId == 0 ? 'Admin users' : 'ERROR: group not found'],
+        ];
     }
 
     public static function fetchBeUsers(int $groupId): array
@@ -35,7 +35,7 @@ class BeUserUtility
         if ($groupId === 0) {
             /** @var Result $result */
             $result = $queryBuilder
-                ->select('uid', 'username')
+                ->select('uid', 'username', 'tstamp', 'email')
                 ->from('be_users')
                 ->andWhere(
                     $queryBuilder->expr()->eq('admin', $queryBuilder->createNamedParameter(1)),
@@ -45,7 +45,7 @@ class BeUserUtility
         } else {
             /** @var Result $result */
             $result = $queryBuilder
-                ->select('uid', 'username')
+                ->select('uid', 'username', 'tstamp', 'email')
                 ->from('be_users')
                 ->orWhere(
                     $queryBuilder->expr()->eq('usergroup', $queryBuilder->createNamedParameter($groupId)),
@@ -62,6 +62,7 @@ class BeUserUtility
                         $queryBuilder->createNamedParameter($queryBuilder->escapeLikeWildcards($groupId) . ',%'),
                     ),
                 )
+                ->orderBy('tstamp', 'DESC')
                 ->executeQuery();
             $rows = $result->fetchAllAssociative();
         }

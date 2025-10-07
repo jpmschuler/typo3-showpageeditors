@@ -2,9 +2,11 @@
 
 namespace JPMSchuler\ShowPageEditors\Utility;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 class GroupMemberHelper
 {
-    public static function showList(int $groupID): array
+    public static function getList(int $groupID, int $verbosity = OutputInterface::VERBOSITY_NORMAL): array
     {
         $inherited = BeUserUtility::fetchBeGroupsWhichInherit($groupID);
 
@@ -17,11 +19,12 @@ class GroupMemberHelper
             array_unshift($inherited, $originalGroup);
         }
         foreach ($inherited as $group) {
-            $output[] = 'GID_' . $group['uid'] . ' ' . $group['title'];
+            $output[] = OutputHelper::generateGroupLine($group, $verbosity);
             foreach (BeUserUtility::fetchBeUsers($group['uid']) as $user) {
-                $output[] = 'UID_' . $user['uid'] . ' ' . $user['username'];
+                $output[] = OutputHelper::generateUserLine($user, $verbosity);
             }
         }
         return $output;
     }
 }
+

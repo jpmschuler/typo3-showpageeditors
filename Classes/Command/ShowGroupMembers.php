@@ -27,7 +27,7 @@ class ShowGroupMembers extends Command
             if ($lineFeed) {
                 $output->writeln('');
             }
-            $data = GroupMemberHelper::showList($gid);
+            $data = GroupMemberHelper::getList($gid, $output->getVerbosity());
             $output->writeln(MarkupHelper::convertLinesForOutput($data));
             $lineFeed = true;
         }

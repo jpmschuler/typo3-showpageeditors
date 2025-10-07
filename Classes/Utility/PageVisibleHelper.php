@@ -2,12 +2,13 @@
 
 namespace JPMSchuler\ShowPageEditors\Utility;
 
+use Symfony\Component\Console\Output\OutputInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Utility\RootlineUtility;
 
 class PageVisibleHelper
 {
-    public static function showList(int $pageId): array
+    public static function getList(int $pageId, int $verbosity = OutputInterface::VERBOSITY_NORMAL): array
     {
         $pages = static::getPageTreeForPid($pageId);
         $output = [];
@@ -23,9 +24,9 @@ class PageVisibleHelper
             $groupList = BeUserUtility::fetchBeGroupsForDbMountpoint($item['uid']);
             if (count($groupList) > 0) {
                 foreach ($groupList as $group) {
-                    $output[] = 'GID_' . $group['uid'] . ' ' . $group['title'];
+                    $output[] = OutputHelper::generateGroupLine($group, $verbosity);
                     foreach (BeUserUtility::fetchBeUsers($group['uid']) as $user) {
-                        $output[] = 'UID_' . $user['uid'] . ' ' . $user['username'];
+                        $output[] = OutputHelper::generateUserLine($user, $verbosity);
                     }
                 }
             }
